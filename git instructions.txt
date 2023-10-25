@@ -1,0 +1,7 @@
+git status  # what files I have changed 
+git add -u # will add those changes to the current commit
+git commit -m #"Fix: made a change to module X to allow picture upload"
+git push # will push to my branch on gitlab.com
+
+git checkout -b ALEX-01
+git push -u origin ALEX-01

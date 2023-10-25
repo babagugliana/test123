@@ -1,0 +1,228 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Dashboard {% endblock title %}
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/css/select2.min.css" rel="stylesheet" />
+
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+
+
+<style>
+  /* Add custom CSS rules here */
+  .form-control option[data-icon]::before {
+      content: "   ";
+      display: inline-block;
+      width: 160px; /* Adjust width as needed */
+      height: 160px; /* Adjust height as needed */
+      background-repeat: no-repeat;
+      background-position: left center;
+      margin-right: 50px; /* Adjust spacing between icon and text */
+      /* Add any additional styling you want */
+  }
+
+  .form-control option[data-icon*="hexagon.svg"]::before {
+      background-image: url("{{ config.ASSETS_ROOT }}/img/apple-icon.png"); /* Adjust URL */
+  }
+  
+  /* Add similar rules for other icon options */
+</style>
+
+
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="row my-4">
+    <div class="col-lg-8 col-md-8 mb-md-0 mb-4">
+        <div class="card">
+
+            <div class="card-body px-0 pb-2">
+              <div class="card-body px-0 pb-2">
+                <form id="dynamic-form">
+                    <div class="form-group">
+                        <label for="dropdown1">Connection Shape:</label>
+                        <select class="form-control" id="dropdown1" name="dropdown1">
+                            <option data-icon="https://via.placeholder.com/20x20?text=1">Option 1</option>
+                            <option value="option1" data-icon="{{ config.ASSETS_ROOT }}/img/apple-icon.png">Hexagon</option>
+                            <option value="option2">Octagon</option>
+                            <option value="option3">Tri Lobe</option>
+                            <option value="option4">Six Lobe</option>
+                            <option value="option5">Three Spline</option>
+                            <option value="option6">Four Spline</option>
+                            <option value="option7">No Anti-rotational</option>
+                            <option value="option8">Triangle</option>
+                            <option value="option9">Square</option>
+                            <option value="option10">Pentagon</option>
+                            <option value="option11">Four Lobe</option>
+                            <option value="option12">Five Lobe</option>
+                            <option value="option13">Eight Lobe</option>
+                            <option value="option14">Six Spline</option>
+                            <option value="option15">Eight Spline</option>
+                            <option value="option16">One piece Abutment</option>
+                            <option value="option17">One piece Ball</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="dropdown2">Screwdriver Shape:</label>
+                        <select class="form-control" id="dropdown2" name="dropdown2">
+                            <option value="option1">Hexagon</option>
+                            <option value="option2">Six-point star</option>
+                            <option value="option3">Square</option>
+                            <option value="option4">Flat</option>
+                            <option value="option5">Five-point star</option>
+                            <option value="option6">Eight-point star</option>
+                            <option value="option7">Four lobes</option>
+                            <option value="option8">Cross</option>
+                            <option value="option9">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="dropdown2">Dropdown 3:</label>
+                      <select class="form-control" id="dropdown3" name="dropdown2">
+                          <option value="optionA">Option A</option>
+                          <option value="optionB">Option B</option>
+                          <option value="optionC">Option C</option>
+                      </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="dropdown2">Dropdown 4:</label>
+                    <select class="form-control" id="dropdown4" name="dropdown2">
+                        <option value="optionA">Option A</option>
+                        <option value="optionB">Option B</option>
+                        <option value="optionC">Option C</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                  <label for="dropdown2">Dropdown 5:</label>
+                  <select class="form-control" id="dropdown5" name="dropdown2">
+                      <option value="optionA">Option A</option>
+                      <option value="optionB">Option B</option>
+                      <option value="optionC">Option C</option>
+                  </select>
+              </div>
+              <img src="{{ config.ASSETS_ROOT }}/img/hexagon.svg" alt="Hexagon Image">
+
+                    <button type="button" id="continue-btn" class="btn btn-primary" disabled>Continue</button>
+                </form>
+            </div>
+            
+            </div>
+        </div>
+    </div>
+
+
+    {% include "includes/footer.html" %}
+</div>
+
+
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE --> 
+{% block javascripts %}
+
+  <script src="{{ config.ASSETS_ROOT }}/js/plugins/chartjs.min.js"></script>
+ 
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.min.js"></script>
+    <script>
+    $(document).ready(function() {
+      $('#custom-dropdown').select2({
+        templateResult: function(data) {
+          var icon = $(data.element).data('icon');
+          if (!icon) return data.text;
+          return $('<span><img class="option-icon" src="' + icon + '" /> ' + data.text + '</span>');
+        }
+      });
+    });
+    
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const dropdowns = [
+          document.getElementById("dropdown1"),
+          document.getElementById("dropdown2"),
+          document.getElementById("dropdown3"),
+          document.getElementById("dropdown4"),
+          document.getElementById("dropdown5")
+      ];
+      const continueBtn = document.getElementById("continue-btn");
+  
+      dropdowns.forEach(dropdown => {
+          dropdown.addEventListener("change", toggleContinueButton);
+      });
+  
+      function toggleContinueButton() {
+          const allDropdownsSelected = dropdowns.every(dropdown => dropdown.value !== "");
+          continueBtn.disabled = !allDropdownsSelected;
+      }
+  
+      continueBtn.addEventListener("click", function () {
+          const answers = {};
+          dropdowns.forEach((dropdown, index) => {
+              answers[`dropdown${index + 1}`] = dropdown.value;
+          });
+  
+          const formData = new FormData();
+          formData.append("answers", new Blob([JSON.stringify(answers)], { type: "application/json" }));
+  
+          fetch("/upload_answer", {
+              method: "POST",
+              body: formData
+          })
+          .then(response => response.json())
+          .then(data => {
+              if (data.success) {
+                  window.location.href = "/next_page"; // Replace with your actual URL
+              } else {
+                  alert("File upload failed. Please try again.");
+              }
+          })
+          .catch(error => {
+              console.error("Error uploading file:", error);
+              alert("An error occurred. Please try again.");
+          });
+      });
+  });
+  
+
+
+
+
+  window.onload = function() {
+    history.pushState(null, null, location.href);
+    window.onpopstate = function() {
+        history.go(1);
+    };
+};
+
+
+
+
+	
+	var ctx = document.getElementById("chart-bars").getContext("2d");
+
+
+    var ctx2 = document.getElementById("chart-line").getContext("2d");
+
+    var gradientStroke1 = ctx2.createLinearGradient(0, 230, 0, 50);
+
+    gradientStroke1.addColorStop(1, 'rgba(203,12,159,0.2)');
+    gradientStroke1.addColorStop(0.2, 'rgba(72,72,176,0.0)');
+    gradientStroke1.addColorStop(0, 'rgba(203,12,159,0)'); //purple colors
+
+    var gradientStroke2 = ctx2.createLinearGradient(0, 230, 0, 50);
+
+    gradientStroke2.addColorStop(1, 'rgba(20,23,39,0.2)');
+    gradientStroke2.addColorStop(0.2, 'rgba(72,72,176,0.0)');
+    gradientStroke2.addColorStop(0, 'rgba(20,23,39,0)'); //purple colors
+
+	
+	
+	
+  </script>
+
+{% endblock javascripts %}

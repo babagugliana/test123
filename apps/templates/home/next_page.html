@@ -1,0 +1,81 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Dashboard {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+<style>
+
+
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="row my-4">
+    <div class="col-lg-12 col-md-12 mb-md-0 mb-4">
+        <div class="card">
+
+            <div class="card-body px-0 pb-2">
+              <div class="card-body px-0 pb-2">
+                <div class="text-center"> <!-- Center-align the content -->
+                    <h1 class="display-4" id="greeting">Thank You!</h1> <!-- Larger font size -->
+                </div>
+            </div>
+            
+            </div>
+        </div>
+    </div>
+
+
+    {% include "includes/footer.html" %}
+</div>
+
+
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE --> 
+{% block javascripts %}
+
+  <script src="{{ config.ASSETS_ROOT }}/js/plugins/chartjs.min.js"></script>
+  <script>
+    window.onload = function() {
+        history.pushState(null, null, location.href);
+        window.onpopstate = function() {
+            history.go(1);
+        };
+    };
+    document.addEventListener("DOMContentLoaded", function () {
+        const retrievedFileName = localStorage.getItem("uniqueFilename");
+
+        if (retrievedFileName) {
+            const greetingElement = document.getElementById("greeting");
+            greetingElement.textContent = `Hello, ${retrievedFileName}!`;
+        }
+    });
+
+
+
+	var ctx = document.getElementById("chart-bars").getContext("2d");
+
+
+    var ctx2 = document.getElementById("chart-line").getContext("2d");
+
+    var gradientStroke1 = ctx2.createLinearGradient(0, 230, 0, 50);
+
+    gradientStroke1.addColorStop(1, 'rgba(203,12,159,0.2)');
+    gradientStroke1.addColorStop(0.2, 'rgba(72,72,176,0.0)');
+    gradientStroke1.addColorStop(0, 'rgba(203,12,159,0)'); //purple colors
+
+    var gradientStroke2 = ctx2.createLinearGradient(0, 230, 0, 50);
+
+    gradientStroke2.addColorStop(1, 'rgba(20,23,39,0.2)');
+    gradientStroke2.addColorStop(0.2, 'rgba(72,72,176,0.0)');
+    gradientStroke2.addColorStop(0, 'rgba(20,23,39,0)'); //purple colors
+
+	
+	
+	
+  </script>
+
+{% endblock javascripts %}

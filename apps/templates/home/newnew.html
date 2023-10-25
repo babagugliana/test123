@@ -1,0 +1,298 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Dashboard {% endblock title %}
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/css/select2.min.css" rel="stylesheet" />
+
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+
+
+<style>
+  /* Add custom CSS rules here */
+
+
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-button {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            color: black;
+            padding: 10px 90px;
+            border-radius: 5px;
+            cursor: pointer;
+            border: 1.5px solid #ccc;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 200px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-option {
+            display: flex;
+            align-items: center;
+            padding: 8px 10px;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .dropdown-option img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .dropdown-option:hover {
+            background-color: #ddd;
+        }
+    </style>
+
+
+
+
+
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="row my-4">
+    <div class="col-lg-8 col-md-8 mb-md-0 mb-4">
+        <div class="card">
+
+            <div class="card-body px-0 pb-2">
+              <div class="card-body px-0 pb-2">
+                <form id="dynamic-form" action="/test" method="post">
+                    {% if show_message %}
+                        <p>{{ message }}</p>
+                    {% endif %}
+                    
+                    <div class="form-group">
+                        <div class="dropdown">
+                            <label for="dropdown1">Connection Shape:</label>
+                            <div class="form-control" id="dropdown1">
+                                <span>Choose an option:</span>
+                                <span>&#9662;</span>
+                                <img src="{{ config.ASSETS_ROOT }}/img/white.png" alt="" id="dropdown1_img" style="width: 30px; height: 30px;">
+                            </div>
+                            <div class="dropdown-content">
+                                <a href="#" class="dropdown-option" onclick="selectOption('Hexagon', '{{ config.ASSETS_ROOT }}/img/icons/hexagon.svg')">
+                                    <img src="{{ config.ASSETS_ROOT }}/img/icons/hexagon.svg" alt="Hexagon"> Hexagon
+                                </a>
+                                <a href="#" class="dropdown-option" onclick="selectOption('Octagon','{{ config.ASSETS_ROOT }}/img/icons/octagon.svg')">
+                                    <img src="{{ config.ASSETS_ROOT }}/img/icons/octagon.svg" alt="Octagon"> Octagon
+                                </a>
+                                <a href="#" class="dropdown-option" onclick="selectOption('Tri Lobe','{{ config.ASSETS_ROOT }}/img/icons/tri_lobe.svg')">
+                                    <img src="{{ config.ASSETS_ROOT }}/img/icons/tri_lobe.svg" alt="Tri Lobe"> Tri Lobe
+                                </a>
+                                <a href="#" class="dropdown-option" onclick="selectOption('Six Lobe','{{ config.ASSETS_ROOT }}/img/icons/six_lobe.svg')">
+                                    <img src="{{ config.ASSETS_ROOT }}/img/icons/six_lobe.svg" alt="Six Lobe"> Six Lobe
+                                </a>
+                                <a href="#" class="dropdown-option" onclick="selectOption('Three Spline','{{ config.ASSETS_ROOT }}/img/icons/three_spline.svg')">
+                                    <img src="{{ config.ASSETS_ROOT }}/img/icons/three_spline.svg" alt="Three Spline"> Three Spline
+                                </a>
+                                <a href="#" class="dropdown-option" onclick="selectOption('Four Spline','{{ config.ASSETS_ROOT }}/img/icons/four_spline.svg')">
+                                    <img src="{{ config.ASSETS_ROOT }}/img/icons/four_spline.svg" alt="Four Spline"> Four Spline
+                                </a>
+                                <a href="#" class="dropdown-option" onclick="selectOption('Round','{{ config.ASSETS_ROOT }}/img/icons/no_anti_rotational.svg')">
+                                    <img src="{{ config.ASSETS_ROOT }}/img/icons/no_anti_rotational.svg" alt="Round"> Round
+                                </a>
+                                <a href="#" class="dropdown-option" onclick="selectOption('Triangle','{{ config.ASSETS_ROOT }}/img/icons/triangle.svg')">
+                                    <img src="{{ config.ASSETS_ROOT }}/img/icons/triangle.svg" alt="Triangle"> Triangle
+                                </a>
+                                <a href="#" class="dropdown-option" onclick="selectOption('Pentagon','{{ config.ASSETS_ROOT }}/img/icons/pentagon.svg')">
+                                    <img src="{{ config.ASSETS_ROOT }}/img/icons/pentagon.svg" alt="Pentagon"> Pentagon
+                                </a>
+                                <a href="#" class="dropdown-option" onclick="selectOption('Four Lobe','{{ config.ASSETS_ROOT }}/img/icons/four_lobe.svg')">
+                                    <img src="{{ config.ASSETS_ROOT }}/img/icons/four_lobe.svg" alt="Four Lobe"> Four Lobe
+                                </a>
+                                <a href="#" class="dropdown-option" onclick="selectOption('Five Lobe','{{ config.ASSETS_ROOT }}/img/icons/five_lobe.svg')">
+                                    <img src="{{ config.ASSETS_ROOT }}/img/icons/five_lobe.svg" alt="Five Lobe"> Five Lobe
+                                </a>
+                                <a href="#" class="dropdown-option" onclick="selectOption('Eight Lobe','{{ config.ASSETS_ROOT }}/img/icons/eight_lobe.svg')">
+                                    <img src="{{ config.ASSETS_ROOT }}/img/icons/eight_lobe.svg" alt="Eight Lobe"> Eight Lobe
+                                </a>
+                                <a href="#" class="dropdown-option" onclick="selectOption('Six Spline','{{ config.ASSETS_ROOT }}/img/icons/six_spline.svg')">
+                                    <img src="{{ config.ASSETS_ROOT }}/img/icons/six_spline.svg" alt="Six Spline"> Six Spline
+                                </a>
+                                <a href="#" class="dropdown-option" onclick="selectOption('Eight Spline','{{ config.ASSETS_ROOT }}/img/icons/eight_spline.svg')">
+                                    <img src="{{ config.ASSETS_ROOT }}/img/icons/eight_spline.svg" alt="Eight Spline"> Eight Spline
+                                </a>
+                                <a href="#" class="dropdown-option" onclick="selectOption('Single Piece Abutment','{{ config.ASSETS_ROOT }}/img/icons/one_piece_abutment.svg')">
+                                    <img src="{{ config.ASSETS_ROOT }}/img/icons/one_piece_abutment.svg" alt="Single Piece Abutment"> Single Piece Abutment
+                                </a>
+                                <a href="#" class="dropdown-option" onclick="selectOption('Ball','{{ config.ASSETS_ROOT }}/img/icons/one_piece_ball.svg')">
+                                    <img src="{{ config.ASSETS_ROOT }}/img/icons/one_piece_ball.svg" alt="Ball"> Ball
+                                </a>
+                            </div>
+                            <input type="hidden" id="selectedConnectionShape" name="dropdown1">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="dropdown">
+                            <label for="dropdown2">Scredriver Shape:</label>
+                            <div class="form-control" id="dropdown2">
+                                <span>Choose an option:</span>
+                                <span>&#9662;</span>
+                                <img src="{{ config.ASSETS_ROOT }}/img/white.png" alt="" id="dropdown2_img" style="width: 30px; height: 30px;">
+                                </div>
+                                <div class="dropdown-content">
+                                
+                                <a href="#" value = 'hexagon' class="dropdown-option" onclick="selectOption2('Hexagon', '{{ config.ASSETS_ROOT }}/img/icons/screwdriver/hexagon.svg')">
+                                    <img src="{{ config.ASSETS_ROOT }}/img/icons/screwdriver/hexagon.svg" alt="Hexagon"> Hexagon
+                                </a>
+                                
+                                <a href="#" class="dropdown-option" onclick="selectOption2('Six-Point-Star', '{{ config.ASSETS_ROOT }}/img/icons/screwdriver/six_point_star.svg')">
+                                    <img src="{{ config.ASSETS_ROOT }}/img/icons/screwdriver/six_point_star.svg" alt="Six-Point-Star"> Six-Point-Star
+                                </a>
+                                <a href="#" class="dropdown-option" onclick="selectOption2('Square', '{{ config.ASSETS_ROOT }}/img/icons/screwdriver/square.svg')">
+                                    <img src="{{ config.ASSETS_ROOT }}/img/icons/screwdriver/square.svg" alt="Square"> Square
+                                </a>
+                                <a href="#" class="dropdown-option" onclick="selectOption2('Flat', '{{ config.ASSETS_ROOT }}/img/icons/screwdriver/flat.svg')">
+                                    <img src="{{ config.ASSETS_ROOT }}/img/icons/screwdriver/flat.svg" alt="Flat"> Flat
+                                </a>
+                                <a href="#" class="dropdown-option" onclick="selectOption2('Five-Point-Star', '{{ config.ASSETS_ROOT }}/img/icons/screwdriver/five_point_star.svg')">
+                                    <img src="{{ config.ASSETS_ROOT }}/img/icons/screwdriver/Five_Point_Star.svg" alt="Five-Point-Star"> Five-Point-Star
+                                </a>
+                                <a href="#" class="dropdown-option" onclick="selectOption2('Four Lobes','{{ config.ASSETS_ROOT }}/img/icons/four_lobes.svg')">
+                                    <img src="{{ config.ASSETS_ROOT }}/img/icons/four_lobes.svg" alt="Four Lobes"> Four Lobes
+                                </a>
+                                <a href="#" class="dropdown-option" onclick="selectOption2('Cross','{{ config.ASSETS_ROOT }}/img/icons/cross.svg')">
+                                    <img src="{{ config.ASSETS_ROOT }}/img/icons/cross.svg" alt="Cross"> Cross
+                                </a>
+
+                            </div>
+                            <input type="hidden" id="selectedScredriverShape" name="dropdown2">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="dropdown3">Dropdown 3:</label>
+                        <select class="form-control" id="dropdown3" name="dropdown3">
+                            <option value="" selected>Choose an option:</option>
+                            <option value="optionA">Option A</option>
+                            <option value="optionB">Option B</option>
+                            <option value="optionC">Option C</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="dropdown4">Dropdown 4:</label>
+                        <select class="form-control" id="dropdown4" name="dropdown4">
+                            <option value="" selected>Choose an option:</option>
+                            <option value="optionA">Option A</option>
+                            <option value="optionB">Option B</option>
+                            <option value="optionC">Option C</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="dropdown5">Dropdown 5:</label>
+                        <select class="form-control" id="dropdown5" name="dropdown5">
+                            <option value="" selected>Choose an option:</option>
+                            <option value="optionA">Option A</option>
+                            <option value="optionB">Option B</option>
+                            <option value="optionC">Option C</option>
+                        </select>
+                    </div>
+                    <button type="submit" id="continue-btn" class="btn btn-primary">Continue</button>
+                    <button type="reset" id="reset-btn" class="btn btn-primary">Reset</button>
+                </form>
+            </div>
+            
+            </div>
+        </div>
+    </div>
+
+
+    {% include "includes/footer.html" %}
+</div>
+
+
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE --> 
+{% block javascripts %}
+
+  <script src="{{ config.ASSETS_ROOT }}/js/plugins/chartjs.min.js"></script>
+  
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.min.js"></script>
+    <script>
+    $(document).ready(function() {
+      $('#custom-dropdown').select2({
+        templateResult: function(data) {
+          var icon = $(data.element).data('icon');
+          if (!icon) return data.text;
+          return $('<span><img class="option-icon" src="' + icon + '" /> ' + data.text + '</span>');
+        }
+      });
+    });
+    </script>
+    <script>
+
+        function selectOption(optionText, optionImage) {
+            const selectedOptionButton = document.getElementById('dropdown1');
+            selectedOptionButton.querySelector('span:first-child').textContent = optionText;
+            const selectedOptionImage = document.getElementById('dropdown1_img'); // fixed here
+            selectedOptionImage.src = optionImage;
+            selectedOptionImage.alt = optionText;
+            document.getElementById("selectedConnectionShape").value = optionText;
+        }
+
+        function selectOption2(optionText, optionImage) {
+            const selectedOptionButton = document.getElementById('dropdown2');
+            selectedOptionButton.querySelector('span:first-child').textContent = optionText;
+            const selectedOptionImage = document.getElementById('dropdown2_img'); // fixed here
+            selectedOptionImage.src = optionImage;
+            selectedOptionImage.alt = optionText;
+            document.getElementById("selectedScredriverShape").value = optionText;
+        }
+
+    window.onload = function() {
+    history.pushState(null, null, location.href);
+    window.onpopstate = function() {
+        history.go(1);
+    };
+};
+
+
+
+
+	
+	var ctx = document.getElementById("chart-bars").getContext("2d");
+
+
+    var ctx2 = document.getElementById("chart-line").getContext("2d");
+
+    var gradientStroke1 = ctx2.createLinearGradient(0, 230, 0, 50);
+
+    gradientStroke1.addColorStop(1, 'rgba(203,12,159,0.2)');
+    gradientStroke1.addColorStop(0.2, 'rgba(72,72,176,0.0)');
+    gradientStroke1.addColorStop(0, 'rgba(203,12,159,0)'); //purple colors
+
+    var gradientStroke2 = ctx2.createLinearGradient(0, 230, 0, 50);
+
+    gradientStroke2.addColorStop(1, 'rgba(20,23,39,0.2)');
+    gradientStroke2.addColorStop(0.2, 'rgba(72,72,176,0.0)');
+    gradientStroke2.addColorStop(0, 'rgba(20,23,39,0)'); //purple colors
+
+	
+	
+	
+  </script>
+
+{% endblock javascripts %}
